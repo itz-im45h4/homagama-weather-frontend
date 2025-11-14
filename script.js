@@ -5,7 +5,7 @@
 
 // --- CONFIGURATION ---
 const OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast?latitude=6.844&longitude=80.003&daily=temperature_2m_max,temperature_2m_min,temperature_2m_mean,precipitation_sum,precipitation_probability_max,windspeed_10m_max,relative_humidity_2m_max,uv_index_max,weathercode&hourly=temperature_2m,precipitation_probability,windspeed_10m,relative_humidity_2m&timezone=auto";
-const MY_API_URL = "http://127.0.0.1:5000/predict";
+const MY_API_URL = "https://im45h4.pythonanywhere.com/predict";
 
 document.addEventListener("DOMContentLoaded", () => {
     window.requestAnimationFrame(() => document.body.classList.add("page-ready"));
