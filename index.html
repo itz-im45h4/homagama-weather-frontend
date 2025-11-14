@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Predictons at Homagama</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero-section" id="hero">
+            <!-- LEFT SIDE CONTENT -->
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p class="star" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2.5l2.4 5.2 5.7.5-4.3 3.7 1.3 5.6-5.1-3.1-5.1 3.1 1.3-5.6-4.3-3.7 5.7-.5z"/>
+                        </svg>
+                    </p>
+                    <p class="hero-eyebrow">Weather Intelligence</p>
+                    <h1 class="hero-title">Weather<br>Predictons<br>Homagama</h1>
+                    <p class="hero-description">
+                        Leveraging a purpose-built  machine learning model trained on local climate data.<br> This system provides superior forecasting for Homagama <br> by combining proprietary algorithms with <br> real-time meteorological inputs—offering precision that generic weather services <br>cannot match.
+                    </p>
+                    <div class="hero-status" id="hero-status" role="status">
+                        Standing by for the latest forecast
+                    </div>
+                    <div class="hero-metrics" id="quick-stats">
+                        <div class="metric">
+                            <p class="metric-label">AI Temp</p>
+                            <p class="metric-value" id="quick-temp">--</p>
+                        </div>
+                        <div class="metric">
+                            <p class="metric-label">Rain Chance</p>
+                            <p class="metric-value" id="quick-rain">--</p>
+                        </div>
+                        <div class="metric">
+                            <p class="metric-label">Updated</p>
+                            <p class="metric-value" id="quick-updated">--</p>
+                        </div>
+                    </div>
+                    <button id="predict-button" class="btn">Get Prediction</button>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE VISUAL + DATA -->
+            <div class="hero-visual">
+                <div class="hero-background">
+                    <img src="https://i.ibb.co/1Yn9fZmF/pexels-pixabay-417173.jpg" alt="Moody weather landscape">
+                </div>
+
+                <div class="hero-overlay">
+                    <!-- LOADING STATE -->
+                    <div id="loading" class="loading hidden" role="status" aria-live="polite">
+                        <div class="spinner"></div>
+                        <p>Fetching weather data...</p>
+                    </div>
+
+                    <!-- ERROR STATE -->
+                    <div id="error-display" class="error-panel hidden" role="alert">
+                        <p id="error-message">An error occurred</p>
+                    </div>
+
+                    <!-- DATA PANELS -->
+                    <div id="results" class="hero-results hidden" aria-live="polite">
+                        <!-- AI PREDICTIONS CARD (FIRST) -->
+                        <div class="hero-card prediction-card fade-in">
+                            <div class="card-header">
+                                <span class="card-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                        <rect x="6.5" y="6.5" width="11" height="11" rx="2"></rect>
+                                        <path d="M12 3v2.5M12 18.5V21M4 12h2.5M18.5 12H21M8.5 3v2.5M15.5 3v2.5M8.5 18.5V21M15.5 18.5V21M9.5 9.5h5v5h-5z"></path>
+                                    </svg>
+                                </span>
+                                <h3>Model Predictions</h3>
+                            </div>
+                            <div class="prediction-box">
+                                <div class="pred-item">
+                                    <div class="pred-label">Today's<br>Temperature</div>
+                                    <div class="pred-value" id="pred-temp">--</div>
+                                </div>
+                                <div class="pred-item rain-item">
+                                    <div class="pred-label">Rainfall<br>Probability</div>
+                                    <div class="pred-value rain" id="pred-rain">--</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TODAY'S WEATHER CARD -->
+                        <div class="hero-card today-card fade-in delay-100">
+                            <div class="card-header">
+                                <span class="card-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                        <rect x="4" y="6" width="16" height="14" rx="2"></rect>
+                                        <path d="M4 10h16M8 3v4M16 3v4"></path>
+                                        <circle cx="9" cy="14" r="1.2"></circle>
+                                        <circle cx="12" cy="14" r="1.2"></circle>
+                                        <circle cx="15" cy="14" r="1.2"></circle>
+                                    </svg>
+                                </span>
+                                <h3>Today's Weather</h3>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label">Max Temp</span>
+                                <span class="value" id="today-tmax">--</span>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label">Min Temp</span>
+                                <span class="value" id="today-tmin">--</span>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label">Avg Temp</span>
+                                <span class="value" id="today-tavg">--</span>
+                            </div>
+                            <div class="weather-item last-item">
+                                <span class="label">Precipitation</span>
+                                <span class="value" id="today-prcp">--</span>
+                            </div>
+                        </div>
+
+                        <!-- LOCATION & API DATA CARD -->
+                        <div class="hero-card api-card fade-in delay-200">
+                            <div class="card-header">
+                                <span class="card-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                        <path d="M12 21s6-6.9 6-11a6 6 0 10-12 0c0 4.1 6 11 6 11z"></path>
+                                        <circle cx="12" cy="10" r="1.8"></circle>
+                                        <path d="M5 21h14"></path>
+                                    </svg>
+                                </span>
+                                <h3>Location & Data Source</h3>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label">Latitude</span>
+                                <span class="value" id="api-lat">--</span>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label">Longitude</span>
+                                <span class="value" id="api-lon">--</span>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label">API Temperature</span>
+                                <span class="value" id="api-temp">--</span>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label">Data Source</span>
+                                <span class="value" id="api-source">Open-Meteo</span>
+                            </div>
+                            <div class="weather-item last-item">
+                                <span class="label">Prediction Date</span>
+                                <span class="value" id="api-date">--</span>
+                            </div>
+                        </div>
+
+                        <!-- ATMOSPHERIC DATA CARD -->
+                        <div class="hero-card atmo-card fade-in delay-300">
+                            <div class="card-header">
+                                <span class="card-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                        <path d="M4 9h9a3 3 0 10-3-3"></path>
+                                        <path d="M3 14h12a2.5 2.5 0 11-2.5 2.5"></path>
+                                        <path d="M5 18.5H9.5"></path>
+                                    </svg>
+                                </span>
+                                <h3>Atmospheric Details</h3>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label">Wind Speed</span>
+                                <span class="value" id="atmo-wind">--</span>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label">Humidity</span>
+                                <span class="value" id="atmo-humidity">--</span>
+                            </div>
+                            <div class="weather-item">
+                                <span class="label">UV Index</span>
+                                <span class="value" id="atmo-uv">--</span>
+                            </div>
+                            <div class="weather-item last-item">
+                                <span class="label">Max Rain Probability</span>
+                                <span class="value" id="atmo-rain-prob">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOURLY INSIGHTS -->
+        <section class="insights-section" id="insights">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Hyper-local timeline</p>
+                    <h2>Next 24 hours</h2>
+                   
+                </div>
+                <button type="button" class="chip" id="scroll-to-hero">To Top</button>
+            </div>
+            <div id="hourly-data" class="hourly-grid" aria-live="polite">
+                <p class="hourly-placeholder">Tap "Get Prediction" to unlock the mobile-friendly forecast timeline.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
